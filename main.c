@@ -51,6 +51,9 @@ void main(void)
 {
     // initialize the device
     SYSTEM_Initialize();
+    IO_BUZZER_Toggle();
+    double distance_us;
+    uint16_t distance_mm;
 
     while (1)
     {
@@ -76,10 +79,21 @@ void main(void)
          *   uint16_t yeux_convertir_impulsion_vers_distance_mm(double largeur_impulsion_us)
          * 
          */
+        yeux_start_mesure();
+        distance_us = yeux_get_largeur_impulsion_us();
+        distance_mm = yeux_convertir_impulsion_vers_distance_mm(distance_us);
         
-
+        if(distance_mm < 40)
+        {
+            IO_BUZZER_SetHigh();
+            DELAY_milliseconds(1);
+            IO_BUZZER_SetLow();
+            DELAY_milliseconds(1);
+            
+        }
+        
     }
-}
 /**
  End of File
 */
+}
